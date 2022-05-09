@@ -19,6 +19,10 @@ body {
         color:#fff;
         text-decoration: none;
         font-family: 'Quattrocento Sans', sans-serif;
+
+        @media screen and (max-width: 600px) {
+            font-size: 28px;
+        }
     }
 
     .navigation {
@@ -39,6 +43,31 @@ body {
                 color: #101C47;
             }
         }
+        @media screen and (max-width: 650px) {
+            display: none;
+        }
+    }
+
+    .nav-hamburger {
+        display: none;
+        background-color:#fff;
+        border: none;
+        border-radius: 2px;
+        padding: 5px;
+        margin-bottom: 5px;
+        cursor: pointer;
+
+        .hamburger-line {
+            background-color: #101C47;
+            width: 20px;
+            height: 3px;
+            margin: 3px;
+        }
+
+
+        @media screen and (max-width: 650px) {
+            display: inline-block;
+        }
     }
 }
 
@@ -53,5 +82,10 @@ body {
     margin: 30px auto;
     font-family: 'roboto', sans-serif;
 
+    .content-header {
+        @media screen and (max-width: 650px) {
+            font-size: 20px;
+        }
+    }
 }
 

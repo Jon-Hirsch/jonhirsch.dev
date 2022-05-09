@@ -18,6 +18,11 @@ export default function Layout(props) {
           <Link to="/articles">Articles</Link>
           <Link to="/search">Search</Link>
         </div>
+        <button className="nav-hamburger" aria-label="open navigation menu">
+          <div className="hamburger-line"></div>
+          <div className="hamburger-line"></div>
+          <div className="hamburger-line"></div>
+        </button>
       </div>
       <div className="page-content">{props.children}</div>
     </div>
