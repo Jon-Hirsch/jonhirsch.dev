@@ -1,5 +1,5 @@
 import { Link } from "gatsby";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "@fontsource/quattrocento-sans";
 import "@fontsource/quicksand";
 import "@fontsource/roboto";
@@ -9,6 +9,22 @@ import { CSSTransition } from "react-transition-group";
 
 export default function Layout(props) {
   const [showMenu, setShowMenu] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    function handleScroll() {
+      if (!isScrolled && window.scrollY > 35) {
+        setIsScrolled(true);
+      } else if (isScrolled && window.scrollY <= 35) {
+        setIsScrolled(false);
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isScrolled]);
 
   return (
     <>
@@ -16,7 +32,7 @@ export default function Layout(props) {
         <Helmet>
           <title>JonHirsch.dev</title>
         </Helmet>
-        <div className="page-header">
+        <div className={isScrolled ? "page-header scrolled" : "page-header"}>
           <Link className="home-link" to="/">
             jonhirsch.dev
           </Link>
@@ -37,7 +53,9 @@ export default function Layout(props) {
             <div className="hamburger-line"></div>
           </button>
         </div>
-        <div className="page-content">{props.children}</div>
+        <div className={isScrolled ? "page-content scrolled" : "page-content"}>
+          {props.children}
+        </div>
       </div>
       <CSSTransition
         in={showMenu}
