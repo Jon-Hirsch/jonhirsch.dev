@@ -4,10 +4,14 @@ import "@fontsource/quattrocento-sans";
 import "@fontsource/quicksand";
 import "@fontsource/roboto";
 import "../styles/styles.scss";
+import Helmet from "react-helmet";
 
 export default function Layout(props) {
   return (
     <div className="page">
+      <Helmet>
+        <title>JonHirsch.dev</title>
+      </Helmet>
       <div className="page-header">
         <Link className="home-link" to="/">
           jonhirsch.dev
