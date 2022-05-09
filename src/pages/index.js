@@ -21,7 +21,7 @@ export default function HomePage() {
       <p>
         You can also take a look at my <Link to="/articles">Articles</Link>{" "}
         section to read some of my React tutorials. I originally wrote these
-        tutorials back in 2017 as an introduction to React for some of my
+        tutorials back in 2016 as an introduction to React for some of my
         coworkers. I've recently updated them from the older class based
         components to using function based components and hooks that were
         introduced to React version 16.8 in 2019.
@@ -31,7 +31,7 @@ export default function HomePage() {
         <Link to="https://github.com/Jon-Hirsch/jonhirsch.dev">
           https://github.com/Jon-Hirsch/jonhirsch.dev
         </Link>
-        . The first iteration of this site was built back in 2014 using the
+        . The first iteration of this site was built back in 2013 using the
         classic LAMP stack, but I've recently rebuilt it using React and Gatsby.
       </p>
     </Layout>
