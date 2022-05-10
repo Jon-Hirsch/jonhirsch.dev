@@ -1,13 +1,32 @@
-import { Link } from "gatsby";
-import { StaticImage } from "gatsby-plugin-image";
+import { Link, graphql } from "gatsby";
 import React from "react";
 import Layout from "../../components/Layout";
-import "../../styles/homepage.scss";
 
-export default function HomePage() {
+export default function Projects({ data }) {
   return (
     <Layout>
-      <h1 className="content-header">Projects</h1>
+      <h1 className="content-header">Personal Projects</h1>
+      {data.allMdx.nodes.map((node) => (
+        <div key={node.id}>
+          <h2>
+            <Link to={`/${node.slug}`}>{node.frontmatter.title}</Link>
+          </h2>
+        </div>
+      ))}
     </Layout>
   );
 }
+
+export const query = graphql`
+  query {
+    allMdx(filter: { fileAbsolutePath: { regex: "/personal-projects/" } }) {
+      nodes {
+        frontmatter {
+          title
+        }
+        id
+        slug
+      }
+    }
+  }
+`;
