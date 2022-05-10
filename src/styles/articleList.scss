@@ -1,0 +1,22 @@
+.article-link {
+    margin-bottom: 0;
+    font-size: 24px;
+    a {
+        text-decoration: none;
+        color: #935A85;
+        
+    }
+}
+
+.article-description {
+    margin-top: 0;
+}
+
+.articles-list {
+    .article-div {
+        border-bottom: 1px solid;
+        &:nth-last-child(1) {
+            border-bottom: none;
+        }
+    }
+}
