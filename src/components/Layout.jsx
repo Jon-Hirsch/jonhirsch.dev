@@ -32,7 +32,10 @@ export default function Layout(props) {
         <Helmet>
           <title>JonHirsch.dev</title>
         </Helmet>
-        <div className={isScrolled ? "page-header scrolled" : "page-header"}>
+        <div
+          className={isScrolled ? "page-header scrolled" : "page-header"}
+          data-testid="page-header"
+        >
           <Link className="home-link" to="/">
             jonhirsch.dev
           </Link>
@@ -44,8 +47,8 @@ export default function Layout(props) {
           </div>
           <button
             className="nav-hamburger"
-            role="button"
             aria-label="open navigation menu"
+            data-testid="nav-button"
             onClick={() => setShowMenu(true)}
           >
             <div className="hamburger-line"></div>
@@ -68,7 +71,7 @@ export default function Layout(props) {
           <div className="close-menu-button-container">
             <button
               className="close-menu-button"
-              role="button"
+              data-testid="close-menu-button"
               aria-label="close navigation menu"
               onClick={() => setShowMenu(false)}
             >
@@ -76,7 +79,7 @@ export default function Layout(props) {
               <div className="close-button-line"></div>
             </button>
           </div>
-          <div className="menu-links">
+          <div className="menu-links" data-testid="menu-links">
             <Link to="/">Home</Link>
             <Link to="/personal-projects">Personal Projects</Link>
             <Link to="/articles">Articles</Link>
