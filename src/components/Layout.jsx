@@ -30,7 +30,11 @@ export default function Layout(props) {
   return (
     <>
       <div className="page">
-        <Helmet>
+        <Helmet
+          htmlAttributes={{
+            lang: "en",
+          }}
+        >
           <title>JonHirsch.dev</title>
         </Helmet>
         <div
