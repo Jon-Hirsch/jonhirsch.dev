@@ -5,7 +5,7 @@ import Layout from "../components/Layout";
 import Helmet from "react-helmet";
 
 const ContentPage = ({ data }) => {
-  const scripts = [];
+  const scripts = data.mdx.frontmatter.scripts;
   return (
     <Layout pageTitle={data.mdx.frontmatter.title}>
       <Helmet>
@@ -31,6 +31,7 @@ export const query = graphql`
       body
       frontmatter {
         title
+        scripts
       }
     }
   }
