@@ -68,6 +68,8 @@ export default function Layout(props) {
         mountOnEnter={true}
         unmountOnExit={true}
       >
+        {/* disable a11y warnings on this line. The close button is included to handle a11y navigation */}
+        {/* eslint-disable-next-line */}
         <div className="menu-overlay" onClick={() => setShowMenu(false)}>
           <div className="close-menu-button-container">
             <button
