@@ -25,7 +25,10 @@ export default function Articles({ data }) {
 
 export const query = graphql`
   query {
-    allMdx(filter: { fileAbsolutePath: { regex: "/articles/" } }) {
+    allMdx(
+      filter: { frontmatter: { category: { eq: "articles" } } }
+      sort: { fields: frontmatter___displayOrder }
+    ) {
       nodes {
         frontmatter {
           title

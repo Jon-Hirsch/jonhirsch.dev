@@ -25,7 +25,10 @@ export default function Projects({ data }) {
 
 export const query = graphql`
   query {
-    allMdx(filter: { fileAbsolutePath: { regex: "/personal-projects/" } }) {
+    allMdx(
+      filter: { frontmatter: { category: { eq: "projects" } } }
+      sort: { fields: frontmatter___title }
+    ) {
       nodes {
         frontmatter {
           title
