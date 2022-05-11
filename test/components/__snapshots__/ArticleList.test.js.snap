@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ArticleList should render a list of articles 1`] = `
+<div>
+  <div
+    class="articles-list"
+  >
+    <div
+      class="article-div"
+    >
+      <h3
+        class="article-link"
+      >
+        <a
+          href="//1"
+        >
+          title1
+        </a>
+      </h3>
+      <p
+        class="article-description"
+      >
+        description 1
+      </p>
+    </div>
+    <div
+      class="article-div"
+    >
+      <h3
+        class="article-link"
+      >
+        <a
+          href="//2"
+        >
+          title2
+        </a>
+      </h3>
+      <p
+        class="article-description"
+      >
+        description 2
+      </p>
+    </div>
+    <div
+      class="article-div"
+    >
+      <h3
+        class="article-link"
+      >
+        <a
+          href="//3"
+        >
+          title3
+        </a>
+      </h3>
+      <p
+        class="article-description"
+      >
+        description 3
+      </p>
+    </div>
+  </div>
+</div>
+`;

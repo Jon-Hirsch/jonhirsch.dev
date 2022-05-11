@@ -1,5 +1,6 @@
 import { Link } from "gatsby";
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import "@fontsource/quattrocento-sans";
 import "@fontsource/quicksand";
 import "@fontsource/roboto";
@@ -90,3 +91,7 @@ export default function Layout(props) {
     </>
   );
 }
+
+Layout.propTypes = {
+  children: PropTypes.array,
+};
