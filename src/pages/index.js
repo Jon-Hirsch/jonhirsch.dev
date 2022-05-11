@@ -2,7 +2,6 @@ import { Link } from "gatsby";
 import { StaticImage } from "gatsby-plugin-image";
 import React from "react";
 import Layout from "../components/Layout";
-import "../styles/homepage.scss";
 
 export default function HomePage() {
   return (
@@ -28,9 +27,9 @@ export default function HomePage() {
       </p>
       <p>
         Finally, the source code for this side is available on Github here:{" "}
-        <Link to="https://github.com/Jon-Hirsch/jonhirsch.dev">
+        <a href="https://github.com/Jon-Hirsch/jonhirsch.dev">
           https://github.com/Jon-Hirsch/jonhirsch.dev
-        </Link>
+        </a>
         . The first iteration of this site was built back in 2013 using the
         classic LAMP stack, but I've recently rebuilt it using React and Gatsby.
       </p>

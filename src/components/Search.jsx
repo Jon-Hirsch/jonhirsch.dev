@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-
-import "../styles/search.scss";
 import ArticleList from "./ArticleList";
 
 export default function Search(props) {
