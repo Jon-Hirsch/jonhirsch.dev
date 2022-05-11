@@ -9,7 +9,7 @@ describe("ArticleList", () => {
   test("should render a list of articles", () => {
     const nodes = [
       {
-        id: 1,
+        id: "1",
         slug: "/1",
         frontmatter: {
           title: "title1",
@@ -17,7 +17,7 @@ describe("ArticleList", () => {
         },
       },
       {
-        id: 2,
+        id: "2",
         slug: "/2",
         frontmatter: {
           title: "title2",
@@ -25,7 +25,7 @@ describe("ArticleList", () => {
         },
       },
       {
-        id: 3,
+        id: "3",
         slug: "/3",
         frontmatter: {
           title: "title3",

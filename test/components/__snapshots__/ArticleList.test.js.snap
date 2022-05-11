@@ -7,6 +7,7 @@ exports[`ArticleList should render a list of articles 1`] = `
   >
     <div
       class="article-div"
+      data-testid="article-div"
     >
       <h3
         class="article-link"
@@ -25,6 +26,7 @@ exports[`ArticleList should render a list of articles 1`] = `
     </div>
     <div
       class="article-div"
+      data-testid="article-div"
     >
       <h3
         class="article-link"
@@ -43,6 +45,7 @@ exports[`ArticleList should render a list of articles 1`] = `
     </div>
     <div
       class="article-div"
+      data-testid="article-div"
     >
       <h3
         class="article-link"

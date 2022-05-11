@@ -8,7 +8,7 @@ export default function ArticleList(props) {
   return (
     <div className="articles-list">
       {props.nodes.map((node) => (
-        <div key={node.id} className="article-div">
+        <div key={node.id} className="article-div" data-testid="article-div">
           <h3 className="article-link">
             <Link to={`/${node.slug}`}>{node.frontmatter.title}</Link>
           </h3>

@@ -95,5 +95,5 @@ export default function Layout(props) {
 }
 
 Layout.propTypes = {
-  children: PropTypes.array,
+  children: PropTypes.node,
 };

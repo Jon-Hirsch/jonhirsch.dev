@@ -1,0 +1,10 @@
+.search-options {
+    display: flex;
+    @media screen and (max-width: 800px) {
+        flex-direction: column;
+    }
+
+    .option-div {
+        padding-right: 40px;
+    }
+}
