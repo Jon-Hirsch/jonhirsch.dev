@@ -1,0 +1,248 @@
+---
+title: "Intro to React Part 2: Babel, JSX, and React"
+description: "An introduction to Babel, JSX, and React"
+category: "articles"
+displayOrder: 1
+---
+
+### Intro to React
+
+#### Part 2: Babel, JSX, and React
+
+- [Part 1: NPM and Webpack](/articles/react-part-1-npm-and-webpack)
+- Part 2: Babel, JSX, and React
+- [Part 3: Components and CSS](/articles/react-part-3-components-and-css)
+- [Part 4: Props](/articles/react-part-4-props)
+  - [Exercise 1](/articles/react-part-4-exercise-1)
+  - [Exercise 2](/articles/react-part-4-exercise-2)
+- [Part 5: State](/articles/react-part-5-state)
+  - [Exercise 1](/articles/react-part-5-exercise-1)
+- [Part 6: More State](/articles/react-part-6-more-state)
+  - [Exercise 1](/articles/react-part-6-exercise-1)
+
+In the last section, we started a project and installed NPM and Webpack.
+In this section we will be looking at two more prerequisites for getting a
+React project going: JSX and Babel. We will take a look at what these are,
+and then see how to install them. After that, we will install React, and write
+our very first bit of React code.
+
+##### JSX
+
+The first piece I want to talk about is JSX. JSX is another one of Facebook's creations, and is
+complementary to React. JSX is an extension to JavaScript that lets you write tags
+(both standard HTML tags, and custom React tags) straight into your JavaScript. What that means is
+that generating HTML with JavaScript becomes a whole lot easier.
+
+For example, if I wanted to use plain JavaScript to create an input element the code might look
+something like this:
+
+```js
+const element = document.createElement("input");
+element.type = "text";
+element.name = "inputField";
+element.className = "inputClass";
+element.value = "default";
+```
+
+But with JSX, the code can be simplified down to:
+
+```js
+const element = (
+  <input type="text" name="inputField" className="inputClass" value="default" />
+);
+```
+
+The benefits become even more pronounced when you begin nesting elements. Again, here is what code might look
+like with plain JavaScript:
+
+```js
+const element = document.createElement("input");
+element.type = "text";
+element.name = "inputField";
+element.className = "inputClass";
+element.value = "default";
+const div = document.createElement("div");
+div.className = "container-div";
+div.appendChild(element);
+```
+
+And here it is with JSX:
+
+```js
+const element = (
+  <div className="container-div">
+    <input
+      type="text"
+      name="inputField"
+      className="inputClass"
+      value="default"
+    />
+  </div>
+);
+```
+
+As you can see, this is a much more natural way of generating your HTML. Additionally,
+JSX makes it easy to pass data into the tags being created. Say for instance, that in the
+previous example, you wanted the value to contain some data that was stored in a variable.
+JSX lets you insert variables and other JavaScript statements by wrapping them in {}. For
+Example:
+
+```js
+const myValue = "Hello World";
+const element = (
+  <div>
+    <input
+      type="text"
+      name="inputField"
+      className="inputClass"
+      value={myValue}
+    />
+  </div>
+);
+```
+
+It is worth noting that it is technically possible to write React without JSX. However,
+not using it would defeat a lot of the purpose of using React, and you really don't see
+any React projects that aren't taking advantage of JSX.
+
+##### Babel
+
+At this point, you may be wondering how we are going to use JSX, seeing that browsers do
+not natively support it. This is where Babel comes in. Babel is a JavaScript compiler that
+can take things like ES6 and JSX and translate them into JavaScript that is currently understood
+by browers. It will work alongside Webpack to take all our code and compile and bundle it into a
+single file our web browser can run.
+
+##### Installing JSX and Babel
+
+Now that we know the tools we need, let's see how to go about installing them. You will need to
+use npm to download a few packages. Type the following commands:
+
+```bash
+npm i @babel/core babel-loader @babel/preset-env @babel/preset-react --save-dev
+```
+
+```bash
+npm i react react-dom
+```
+
+Let's quickly go over what each of those is.
+
+- **@babel/core**: the base package for Babel.
+- **babel-loader**: this package will allow Webpack to run Babel when it
+  bundles our files.
+- **@babel/preset-env**: allows us to use the latest JavaScript syntax that may
+  need to be transformed for full browser support.
+- **babel-preset-react**: allows Babel to compile React into plain JavaScript.
+- **react**: React.
+- **react-dom**: renders React components into the DOM.
+
+Once you have finished installing the packages, open package.json and take a look at what's changed. It
+should look something like this (the version numbers may be different):
+
+```js
+{
+  "name": "react-boilerplate",
+  "version": "0.0.1",
+  "description": "a react project boilerplate",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.17.10",
+    "@babel/preset-env": "^7.17.10",
+    "@babel/preset-react": "^7.16.7",
+    "babel-loader": "^8.2.5",
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.9.2"
+  },
+  "dependencies": {
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
+  }
+}
+```
+
+You may have also noticed a new folder in your project called node_modules. This is where all your packages
+are actually installed. If you open it up, you should see all the packages you just installed. You shouldn't
+need to make any changes to them, but it is worth knowing where they are stored.
+
+##### Configuring Webpack
+
+There is one last step we need to complete before we can start writing React. We need to set up our Webpack
+configuration to know how to read in the correct babel presets. Go into your webpack.config.js file and update
+it to look like this:
+
+```js
+module.exports = {
+  entry: "./src/index.js",
+  output: {
+    path: __dirname + "/dist",
+    filename: "bundle.js",
+  },
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        loader: "babel-loader",
+        exclude: /node_modules/,
+        options: {
+          presets: ["@babel/preset-env", "@babel/preset-react"],
+        },
+      },
+    ],
+  },
+};
+```
+
+Let's break down the rules section you just added.
+
+- **test**: This is a regular expression that tells Webpack which files to run Babel
+  on. In this case, we want it to run for files ending in .js and .jsx
+- **loader**: Loaders are packages used to transform code. In this case, we want our js and jsx files tranformed by Babel.
+- **exclude**: Folders to ignore. We don't want Babel running on the packages we have installed.
+- **presets**: This contains the presets we installed earlier. These presets tell Babel what kind of transformations to apply.
+
+##### React
+
+Alright, all the necessary groundwork has been laid and you are finally ready to start writing some React code! Open up
+index.js again and write the following code:
+
+```js
+import React from "react";
+import ReactDOM from "react-dom";
+
+ReactDOM.render(<h1>Hello World</h1>, document.getElementById("app"));
+```
+
+The first thing here is the import statements. You can use these imports to bring in npm packages you have installed or files you
+have written. These statements will give you access to any code those files export. There is a bit more going on than that, but
+for now it will suffice to know the import statements are a big part of how Webpack will know what to include in the bundle.
+The next section here is ReactDOM.render. This function handles taking jsx/react elements and rendering them into the DOM. The
+first argument it accepts is what you want rendered. The second argument is the element it will render into.
+
+Go ahead and run Webpack now. If everything was set up correctly, your files should be bundled successfully. Now we just need one
+last step to be able to see the code run. Open up your dist folder, and create a new file named index.html. In that file,
+write the following:
+
+```html
+<!DOCTYPE html>
+<html lang="en-US">
+  <head> </head>
+  <body>
+    <div id="app"></div>
+    <script src="bundle.js"></script>
+  </body>
+</html>
+```
+
+Save the file, and then open it with your browser of choice. If everything worked correctly, you should see the header rendered
+on the page.
+
+Congratulations! You've gotten a React project up and running. This is pretty good stopping point for now, so I'll
+leave off here. In [part 3](/articles/react-part-3-components-and-css) I'll spend some more time talking about import, and I'll
+introduce the real heart of React: components. My full code is available here: https://github.com/Jon-Hirsch/react-boilerplate-part-2
