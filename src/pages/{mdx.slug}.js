@@ -18,7 +18,9 @@ const ContentPage = ({ data }) => {
           ></script>
         ))}
       </Helmet>
-      <MDXRenderer>{data.mdx.body}</MDXRenderer>
+      <div className="mdx-content">
+        <MDXRenderer>{data.mdx.body}</MDXRenderer>
+      </div>
     </Layout>
   );
 };

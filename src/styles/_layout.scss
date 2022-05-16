@@ -105,6 +105,30 @@ body {
             font-size: 20px;
         }
     }
+
+    .mdx-content {
+       &> ul {
+            float: left;
+            padding: 20px;
+            border: 1px solid #777;
+            line-height: normal;
+            list-style-type: none;
+            border-radius: 4px;
+            margin: 0;
+            margin-right: 10px;
+
+            li {
+                margin: 5px 0;
+                a {
+                    color: #935A85;
+                 }
+            }
+
+            ul {
+                list-style-type: disc;
+            }
+        }
+    }
 }
 
 .menu-overlay {
