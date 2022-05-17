@@ -1,0 +1,370 @@
+---
+title: "Intro to React Part 3: Components and CSS"
+description: "Building and styling React components"
+category: "articles"
+displayOrder: 2
+scripts:
+  [
+    "/scripts/react-part-3/example1.js",
+    "/scripts/react-part-3/example2.js",
+    "/scripts/react-part-3/example3.js",
+    "/scripts/react-part-3/example4.js",
+  ]
+---
+
+### Intro to React
+
+#### Part 3: Components and CSS
+
+- [Part 1: NPM and Webpack](/articles/react-part-1-npm-and-webpack)
+- [Part 2: Babel, JSX, and React](/articles/react-part-2-babel-jsx-and-react)
+- Part 3: Components and CSS
+- [Part 4: Props](/articles/react-part-4-props)
+  - [Exercise 1](/articles/react-part-4-exercise-1)
+  - [Exercise 2](/articles/react-part-4-exercise-2)
+- [Part 5: State](/articles/react-part-5-state)
+  - [Exercise 1](/articles/react-part-5-exercise-1)
+- [Part 6: More State](/articles/react-part-6-more-state)
+  - [Exercise 1](/articles/react-part-6-exercise-1)
+
+##### Import Statements
+
+Before we dive into writing components, I want to take a little time to take a closer look at import
+statements. I talk about them briefly in part 2, but I didn't really go into much detail. Imports are an
+important part of React projects because they allow us to separate and organize our code across multiple
+files that can be bundled together by Webpack or other bundlers. They are the means by which our bundler
+knows which files to include in our bundle, and which files to exclude. This gives us a great deal of
+control over exactly what is brought into our projects. Furthermore, imports allow us to better control
+the scope of where specific pieces our code are accessible within our project.
+
+There are several ways import can be used. The first is what we saw back in part 2:
+
+```jsx
+import React from "react";
+import ReactDOM from "react-dom";
+
+ReactDOM.render(<h1>Hello World</h1>, document.getElementById("app"));
+```
+
+In this example we were importing the entire react and reactDOM libraries in from our npm_modules folder.
+For the case of packages installed via npm, we only need to list the name of the package, and Webpack
+will be able to figure out the rest on its own.
+
+The syntax for importing code from a file you have written as opposed to a package you have installed is
+mostly the same but has one important difference. When importing from your own files you cannot simply
+use a name like you would for a package as Webpack would not know how to find that file. Instead, you use
+a relative path. For example, if I wanted to import code from a file named App.js in a folder named components
+I might write an import statement that looked like this:
+
+```jsx
+import App from "./components/App";
+```
+
+If not otherwise specified the default export will be used, but there are times when you want to import a
+specific part of a package. For example, if you wanted to import the useState function from react your import
+statement would look like this:
+
+```jsx
+import { useState } from "react";
+```
+
+##### Exports
+
+Just as we have import statements, we also have exports. Exports will flag a piece of code as being capable of
+being imported. Valid types of exports include variables, objects, and functions. As an example let's say we have
+a utility file called utils.js with two functions we want to export. It might look something like this:
+
+```jsx
+export default function doSomething() {
+  console.log("do something");
+}
+
+export function doSomethingElse() {
+  console.log("do something else");
+}
+```
+
+And then to use those functions in another file you would write:
+
+```jsx
+import doSomething, { doSomethingElse } from "./utils";
+
+doSomething();
+doSomethingElse();
+```
+
+You probably noticed the differences between how the two functions are being imported and exported. First,
+the function doSomething has the keyword default after export, while doSomethingElse does not. Secondly,
+when they are imported doSomethingElse is wrapped in braces, while doSomething is not.
+
+The difference between a plain export and a default export is that a file will only have one default export,
+and that is what will be imported if nothing is specifically targeted using braces. Any non-default exports
+must be specified within braces when they are imported.
+
+##### Components
+
+Okay, now that we've got all the groundwork laid out, we can finally really start digging into React. Components
+are really the core of what React is and does, and they let us break up our website into small manageable chunks.
+Let's start by replacing the h1 tags you wrote in part 2 with a component. First, you will want to make a new
+directory in your src folder called components. Inside that directory make a new file called HelloWorld.js.
+In HelloWorld.js type the following:
+
+```jsx
+import React from "react";
+
+export default function HelloWorld() {
+  return <h1>Hello World!</h1>;
+}
+```
+
+Now, open index.js and update to look like this:
+
+```jsx
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./components/HelloWorld";
+
+ReactDOM.render(<HelloWorld />, document.getElementById("app"));
+```
+
+When that is done, run webpack, and open index.html in your browser. What you should see is essentially the same as
+what you had at the end of part 2:
+
+<div id="example1"></div>
+
+The difference is that this time you've accomplished the result using a component. I know that isn't terribly
+impressive right now, but don't worry, our components will start becoming more complex very shortly. For now,
+let's focus on what's going on inside the component you just wrote.
+
+So the first thing we see is that we are creating a function called HelloWorld. This is going to serve as a template
+for any HelloWorld components we create later. It will contain all the instructions needed to render HelloWorld components
+as well as any behaviors those components might have. We don't have any behaviors or special rendering instructions
+right now, but that's fine, not all components need to be complex.
+
+The most basic components are functions that just return a block of plain JSX, but it's also possible to add
+variables into the mix like so:
+
+```jsx
+function HelloWorld() {
+  const myVar = "Hello World!";
+  return <h1>{myVar}</h1>;
+}
+```
+
+One last important thing to know about your component whatever JSX it returns should be wrapped within a single
+set of tags. That means that the following is valid:
+
+```jsx
+function HelloWorld() {
+  const myVar = "Hello World!";
+  return (
+    <div>
+      <h1>{myVar}</h1>
+      <h1>{myVar}</h1>
+    </div>
+  );
+}
+```
+
+But the same code with the wrapping div removed would not be valid, and would throw an error when you attempted to compile it.
+
+Alright, you've seen the basics of what a component is, so what can you do once you have made a component? Well, one of the
+most important features of components is that they are reusable. That means you and write a component once, and reuse it as many
+times and in as many places as you like. As a very simple example, change index.js to look like this:
+
+```jsx
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./components/HelloWorld";
+
+ReactDOM.render(
+  <div>
+    <HelloWorld />
+    <HelloWorld />
+    <HelloWorld />
+  </div>,
+  document.getElementById("app")
+);
+```
+
+You should see the component being rendered three times like so:
+
+<div id="example2"></div>
+
+The next major feature of components to understand is that they can contain
+other components. It is the nature of React projects that larger components are
+almost always composed of several smaller ones. In fact, most projects will have
+one high level component that contains all the other components. Such a
+component is frequently given the name App or other similar names. Let's go
+ahead and make a new component called App now. Add a new file to your components
+directory called App.js and add the following:
+
+```jsx
+import React from "react";
+export default function App() {
+  return <div></div>;
+}
+```
+
+Leave the div empty for now, we are going to come back shortly and add some components.
+Now open index.js and update it to the following:
+
+```jsx
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./components/App";
+
+ReactDOM.render(<App />, document.getElementById("app"));
+```
+
+Okay, now let's make a new component. This time let's do something a little bit more
+interesting than just a plain hello world message. We'll start with a simple navigation
+bar like the one on the top right of this page. Make a new file in the components
+directory called NavBar.js and in it write the following:
+
+```jsx
+import React from "react";
+
+export default function NavBar() {
+  return (
+    <div>
+      <a href="/">Home</a>
+      <a href="/personal-projects">Personal Projects</a>
+      <a href="/articles">Articles</a>
+      <a href="/search">Search</a>
+    </div>
+  );
+}
+```
+
+Now that we have a couple components, reopen App.js and import HelloWorld and NavBar.
+Add a few instances of each component into the returned JSX like so:
+
+```jsx
+import React from "react";
+import HelloWorld from "./HelloWorld";
+import NavBar from "./NavBar";
+
+export default function App() {
+  return (
+    <div>
+      <NavBar />
+      <HelloWorld />
+      <HelloWorld />
+      <HelloWorld />
+      <NavBar />
+    </div>
+  );
+}
+```
+
+Run Webpack and take a look at what you've got. If everything worked correctly it should look like this:
+
+<div id="example3"></div>
+
+Hopefully you are beginning to see how reusable components could be useful when building a website.
+
+##### Adding CSS
+
+The example above was functional, but the NavBar wasn't terribly interesting to look at. Let's try
+adding some CSS to our component to make it look a bit nicer. The first thing we will need to do
+is install some loaders for handling CSS. Just like how we needed loaders for Webpack to work with
+Babel and React, we will want loaders to let it know how to handle CSS files. Open your command
+line and type:
+
+```bash
+npm i style-loader css-loader --save-dev
+```
+
+Once the loaders are installed open up webpack.config. Update the rules section so that the code
+looks like this:
+
+```js
+rules: [
+    {
+        test: /\.jsx?$/,
+        loader: "babel-loader",
+        exclude: /node_modules/,
+        options: {
+            presets: ["@babel/preset-env", "@babel/preset-react"],
+        },
+    },
+    {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+    },
+],
+```
+
+Webpack will now know how to load CSS. Let's write the css now. Make a new folder in the components
+directory called css and in it create a new file called navbar.css. Type this css into the file:
+
+```css
+@import url(http://fonts.googleapis.com/css?family=Quicksand:300,400,700);
+
+.navbar {
+  display: inline-block;
+  background-color: #222748;
+  padding: 5px;
+}
+
+.navbar--link {
+  display: inline-block;
+  font-family: "Quicksand";
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 4px;
+  margin: 2px;
+  border-radius: 1px;
+  border: solid 1px #fff;
+  color: #fff;
+  background-color: #222748;
+  transition: color 0.4s, background-color 0.4s, border-color 0.4s;
+}
+
+.navbar--link:hover {
+  border-color: #222748;
+  color: #222748;
+  background-color: #fff;
+}
+```
+
+Let's do a bit of updating to NavBar.js. First, you will want to import the css
+file you just created. Importing css looks a little different, in that you simply
+type import followed by the path to the file. After that you will want to add the
+classes to the containing div and links. When working in JSX you will need to use
+the property className instead of class in order to avoid confusion with the JavaScript
+class keyword.
+
+```jsx
+import React from "react";
+import "./css/navbar.css";
+
+export default function NavBar() {
+  return (
+    <div className="navbar">
+      <a className="navbar--link" href="/">
+        Home
+      </a>
+      <a className="navbar--link" href="/personal-projects">
+        Personal Projects
+      </a>
+      <a className="navbar--link" href="/articles">
+        Articles
+      </a>
+      <a className="navbar--link" href="/search">
+        Search
+      </a>
+    </div>
+  );
+}
+```
+
+Run webpack again and take a look at the output. It should look like this:
+
+<div id="example4"></div>
+
+That just about wraps things up for this section. In [part 4](/articles/react-part-4-props) I will explain how to make
+components far more flexible and powerful using props. The completed code for this section
+can be found here: https://github.com/Jon-Hirsch/react-part-3
