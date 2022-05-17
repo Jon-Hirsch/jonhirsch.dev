@@ -1,0 +1,105 @@
+---
+title: "Intro to React Part 4: Props - Exercise 1"
+description: "An exercise with props"
+category: "articles"
+displayOrder: 3
+scripts: ["/scripts/react-part-4-exercise-1/example.js"]
+---
+
+### Intro to React
+
+#### Part 4: Props - Exercise 1
+
+- [Part 1: NPM and Webpack](/articles/react-part-1-npm-and-webpack)
+- [Part 2: Babel, JSX, and React](/articles/react-part-2-babel-jsx-and-react)
+- [Part 3: Components and CSS](/articles/react-part-3-components-and-css)
+- [Part 4: Props](/articles/react-part-4-props)
+  - Exercise 1
+  - [Exercise 2](/articles/react-part-4-exercise-2)
+- [Part 5: State](/articles/react-part-5-state)
+  - [Exercise 1](/articles/react-part-5-exercise-1)
+- [Part 6: More State](/articles/react-part-6-more-state)
+  - [Exercise 1](/articles/react-part-6-exercise-1)
+
+##### Exercise 1: Shape Component
+
+Alright, it's time for something a little different. I knew when I began writing these tutorials
+that I wanted to create some exercises to really help reinforce the concepts I was writing about.
+I taught programming classes for several years, so writing exercises is a familiar topic to me,
+but I was always physically present to answer students' questions about requirements and to correct
+their work. I wondered for a while about how to overcome this limitation, and an idea occurred to
+me: I could write a suite of unit tests to describe the requirements and to validate completed code.
+With that in mind, I've created some github repos with partially completed projects along with a suite
+of unit tests.
+
+To begin head to: https://github.com/Jon-Hirsch/react-part-4-exercise-1 and clone or fork the repository.
+Once you have a copy of the project on your computer run
+
+```bash
+npm i
+```
+
+to install of the necessary dependencies.
+
+For this exercise, all the initial setup and configuration is already taken care of for you,
+but if you look in the components directory you will see there are two empty files: App.js and Shape.js.
+You will be creating these two components.
+
+Shape.js will contain a component that renders colored shapes, and App.js will render three of these Shape
+components: a blue square, a red diamond, and a green circle.
+
+<div id="app"></div>
+
+I've included all the css classes necessary to accomplish this in the styles.css file. The shapes can be
+created by simply applying the correct classes to a div. For instance:
+
+```jsx
+<div className="red circle"></div>
+```
+
+will generate:
+
+<div id="example1"></div>
+
+The component itself would look like this:
+
+```jsx
+<Shape color="red" shape="circle" />
+```
+
+##### Requirements
+
+##### Shape.js
+
+- It should render a div
+- It should apply the class red to the div if the color property is "red"
+- It should apply the class green to the div if the color property is "green"
+- It should apply the class blue to the div if the color property is "blue"
+- It should apply the class red to the div if the color property is not set
+- It should apply the class red to the div if the color property is any other value
+- It should apply the class square to the div if the shape property is "square"
+- It should apply the class diamond to the div if the shape property is "diamond"
+- It should apply the class circle to the div if the shape property is "circle"
+- It should apply the class square to the div if the shape property is not set
+- It should apply the class square to the div if the shape property is any other value
+
+##### App.js
+
+- It should contain a blue square
+- It should contain a red diamond
+- It should contain a green circle
+
+##### Checking your work
+
+This is where those unit tests I mentioned earlier come in. When you want to check if
+your project meets the requirements listed above you can type in:
+
+```bash
+npm test
+```
+
+That command will kick off the testing script should output something that looks like this:
+
+<img alt="unit test output" src="/images/react-part-4-exercise-1/tests.png" />
+
+When all 14 tests pass, you are ready to move on to [exercise 2](/articles/react-part-4-exercise-2).
