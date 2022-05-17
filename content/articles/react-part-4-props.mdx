@@ -1,0 +1,329 @@
+---
+title: "Intro to React Part 4: Props"
+description: "Making components more useful with props"
+category: "articles"
+displayOrder: 3
+scripts: ["/scripts/react-part-4/examples.js"]
+---
+
+### Intro to React
+
+#### Part 4: Props
+
+- [Part 1: NPM and Webpack](/articles/react-part-1-npm-and-webpack)
+- [Part 2: Babel, JSX, and React](/articles/react-part-2-babel-jsx-and-react)
+- [Part 3: Components and CSS](/articles/react-part-3-components-and-css)
+- Part 4: Props
+  - [Exercise 1](/articles/react-part-4-exercise-1)
+  - [Exercise 2](/articles/react-part-4-exercise-2)
+- [Part 5: State](/articles/react-part-5-state)
+  - [Exercise 1](/articles/react-part-5-exercise-1)
+- [Part 6: More State](/articles/react-part-6-more-state)
+  - [Exercise 1](/articles/react-part-6-exercise-1)
+
+##### Webpack Dev Server
+
+Before we start digging deeper into React, I want to take a short detour that will save
+us a lot of time in the long run. After going through the previous section, you may have
+been thinking that it was something of a chore to have to run Webpack and bundle your code
+every single time you made a change and wanted to see it. Fortunately, the makers of Webpack
+have us covered. They have created another package, called Webpack Dev Server that will
+start up a local server that will automatically be updated any time we save any changes.
+
+Setup for Webpack Dev Server is relatively simple. First, you will need to install the package
+globally so it will be available to all of your projects:
+
+```bash
+npm i webpack-dev-server --save-dev
+```
+
+Next you will need to update webpack.config.js in your project to have a few additional options.
+Between the output and module sections of webpack.config.js add a new section called devServer:
+
+```js
+devServer: {
+    static: __dirname + "/dist",
+},
+```
+
+"static" lets the server know what the root folder for the local server should be. In our case we
+want this to be the dist folder where our bundled code is saved. At this point, your full
+webpack.config.js should look like this:
+
+```js
+module.exports = {
+  entry: "./src/index.js",
+  output: {
+    path: __dirname + "/dist",
+    filename: "bundle.js",
+  },
+  devServer: {
+    static: __dirname + "/dist",
+  },
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        loader: "babel-loader",
+        exclude: /node_modules/,
+        options: {
+          presets: ["@babel/preset-env", "@babel/preset-react"],
+        },
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      },
+    ],
+  },
+};
+```
+
+Now that you have everything configured, we can add a new script to your package.json
+to run the dev server:
+
+```js
+"start": "webpack-dev-server --mode development",
+```
+
+Once that is in place we can run the script to start the server:
+
+```bash
+npm run start
+```
+
+It should take a few seconds to start the server and bundle your code, but
+once it gets going you can open your browser and go to the url
+[http://localhost:8080](http://localhost:8080), and you should see your
+React application running there. Any changes you make should now automatically
+show up on that page. Go ahead and try making some small change and saving it.
+
+##### Props
+
+Now that we have an easy way to see changes that we have made, we are ready to
+take a look at props. Props is short for properties, and they are values that are
+passed into a React component that can be used to modify what the component renders,
+or how it behaves.
+
+So far, all the components we have made have had static content. What I mean by that
+is that the components will be the same every time. The HelloWorld component will always
+display "Hello World!", and the NavBar will always display the same four links. This
+severely limits the reusability of those components. Sure, I might be able to use something
+like NavBar in a few places, but if I ever had a situation where I needed a slightly different
+list of links I would have to create a new component with a lot of duplicate code. Fortunately,
+props are the answer to this issue, and will allow us to create far more flexible components.
+We will start by creating some simple styled headers, and we will work up to rewriting the NavBar
+component from the last section.
+
+Here is what we will be making to begin with:
+
+<div id="example1"></div>
+
+Start by creating two new files. A file named PillHeader.js in your components
+directory, and a file named pillheader.css in your css directory.
+
+PillHeader.js:
+
+```js
+import React from "react";
+import "./css/pillheader.css";
+
+export default function PillHeader() {
+  return <div className="pillHeader">Hello World</div>;
+}
+```
+
+pillheader.css:
+
+```css
+.pillHeader {
+  display: inline-block;
+  padding: 6px 10px;
+  background-color: #222748;
+  color: #fff;
+  font-size: 16px;
+  font-family: sans-serif;
+  border-radius: 16px;
+  border: solid 1px #fff;
+}
+```
+
+Next open App.js and update its JSX:
+
+```js
+return (
+  <div>
+    <PillHeader />
+    <PillHeader />
+  </div>
+);
+```
+
+Save your changes, and when the page refreshes you should see this:
+
+<div id="example2"></div>
+Like our other components, this new component is still static and will always
+display "Hello World". Let's add a property to it that will allow it to change.
+Open PillHeader.js and update the function:
+
+```js
+function PillHeader(props) {
+  return <div className="pillHeader">{props.value}</div>;
+}
+```
+
+Then go back to App.js and update the two PillHeader components:
+
+```jsx
+<PillHeader value="Header One" />
+<PillHeader value="Header Two" />
+```
+
+Save your changes and you should now see:
+
+<div id="example3"></div>
+
+As you can see, the way we apply props to React components is essentially the
+same as how we add properties to HTML tags. It is simply a matter of adding:
+
+```jsx
+propName = "propValue";
+```
+
+to the component tag. Within the component function we are able to reference props
+that have been passed in.
+
+As the last example showed props can be a value that is directly displayed by a
+component. However, that is not their only use. Props can also be used to direct
+logic within a component. Let's update the PillHeader component to have an alternate
+style that can toggled on and off with a prop.
+
+First let's create some new styles for the component. Add a secondary style to pillheader.css:
+
+```css
+.pillHeader.secondaryStyle {
+  background-color: #fff;
+  color: #222748;
+  border: solid 1px #222748;
+}
+```
+
+Next update PillHeader.js:
+
+```jsx
+export default function PillHeader(props) {
+  let style = "pillHeader";
+  if (props.secondaryStyle === true) {
+    style += " secondaryStyle";
+  }
+
+  return <div className={style}>{props.value}</div>;
+}
+```
+
+Finally update the PillHeader components in App.js:
+
+```jsx
+<PillHeader value="Header One" />
+<PillHeader value="Header Two" secondaryStyle={true} />
+```
+
+The result should look like this:
+
+<div id="example4"></div>
+
+Hopefully you are starting to get an idea of just how useful props can be. I
+would like to note at this point that while the previous example does a good job
+of highlighting how props can be used to control the flow of logic, it really
+isn't the most elegant solution for swapping styles. As with most things in
+these tutorials I am aiming to give simple examples that help to make clear the
+core concepts of React, but they should not be viewed as the final word on how
+to approach any specific situation.
+
+##### Updating NavBar
+
+Alright, time for one more example. We are going to update the NavBar we created
+in part three. We are going to take it from a static component that can only display:
+
+<div id="example5"></div>
+
+To a component that uses props to control what links it displays like this:
+
+<div id="example6"></div>
+
+This example is going to be a little different from the others, because we
+aren't going to passing single values as our props. Instead, we will be passing
+an array of links. Let's start by updating App.js:
+
+```jsx
+export default function App() {
+  const links = ["JonHirsch.dev", "Google", "React"];
+  return (
+    <div>
+      <NavBar links={links} />
+    </div>
+  );
+}
+```
+
+Next we will need to update NavBar.js to be able to handle and correctly render
+those links. We will map through the array of links that was passed and generate
+appropriate JSX tags for each one. Here is the updated NavBar.js:
+
+```jsx
+import React from "react";
+import "./css/navbar.css";
+
+export default function NavBar(props) {
+  return (
+    <div className="navbar">
+      {props.links.map((link) => (
+        <a key={link} className="navbar--link">
+          {link}
+        </a>
+      ))}
+    </div>
+  );
+}
+```
+
+You should now see a list of links that looks like the example I gave at the
+start of this section. However, right now your links don't go anywhere. They
+have text and styles, but they don't have hrefs. We will need to pass those
+to the component as well. We could pass them in as a second array, but I
+prefer instead to send a single array of objects that contain the values we
+need. Change the array in App.js to the following:
+
+```jsx
+const links = [
+  {
+    text: "JonHirsch.dev",
+    href: "http://www.jonhirsch.dev",
+  },
+  {
+    text: "Google",
+    href: "http://www.google.com",
+  },
+  {
+    text: "React",
+    href: "https://facebook.github.io/react/",
+  },
+];
+```
+
+Now go back to NavBar.js and update the JSX being generated:
+
+```jsx
+<a key={link.text} href={link.href} className="navbar--link">
+  {link.text}
+</a>
+```
+
+The links should now be functional. That about wraps it up for this section.
+
+To help you cement your understanding of props, I've created a
+[couple of exercises](/articles/react-part-4-exercise-1). I would highly
+encourage you to work through them before moving on to
+[part 5](/articles/react-part-5-state).
+
+The complete code for this section can be found here: https://github.com/Jon-Hirsch/react-part-4-props
