@@ -1,0 +1,292 @@
+---
+title: "Intro to React Part 5: State"
+description: "Adding state to components"
+category: "articles"
+displayOrder: 6
+scripts: ["/scripts/react-part-5-state/examples.js"]
+---
+
+### Intro to React
+
+#### Part 5: State
+
+- [Part 1: NPM and Webpack](/articles/react-part-1-npm-and-webpack)
+- [Part 2: Babel, JSX, and React](/articles/react-part-2-babel-jsx-and-react)
+- [Part 3: Components and CSS](/articles/react-part-3-components-and-css)
+- [Part 4: Props](/articles/react-part-4-props)
+  - [Exercise 1](/articles/react-part-4-exercise-1)
+  - [Exercise 2](/articles/react-part-4-exercise-2)
+- Part 5: State
+  - [Exercise 1](/articles/react-part-5-exercise-1)
+
+##### State
+
+In the last section we saw how props could greatly expand what a component could
+render. By setting props to different values, we could dramatically change how a
+component looked or what it displayed. Despite all this, the components were still
+fairly static and couldn't change once the props had been set. That can be alright
+for components that don't respond to user interaction, but what if we need a more
+interactive component? This is where component state comes in.
+
+Like props, state is series of variables that can be used to control a component.
+There are however, two major differences. First is that while props are passed to
+a component from an external source, state is set internally within a component.
+Second is that props are immutable, meaning that the component that they are passed
+to cannot change them, but a component is capable of modifying its own state in
+response to events that occur. Let's take a look at a simple example of what state can do.
+
+<div id="example1" />
+
+As you might imagine, state opens up a host of possibilities for what we can do with React.
+Unfortunately, it is also very easy to use state incorrectly. With this in mind I will be
+covering state in two separate parts. In the first part I'll be going over the basics of
+how to implement and use state in a component, and in the second I'll go over when it is
+and is not appropriate to use state, as well as some of the common pitfalls to avoid.
+
+Let's take a look at the code for the example above:
+
+```jsx
+import React, { useState } from "react";
+import "./css/counter.css";
+
+export default function Counter() {
+  const [counter, setCounter] = useState(0);
+
+  function incrementCounter() {
+    setCounter(counter + 1);
+  }
+
+  function decrementCounter() {
+    setCounter(counter - 1);
+  }
+
+  return (
+    <div>
+      <button className="counterButton" onClick={decrementCounter}>
+        -
+      </button>
+      <span className="counterNumber">{counter}</span>
+      <button className="counterButton" onClick={incrementCounter}>
+        +
+      </button>
+    </div>
+  );
+}
+```
+
+As you can see on the first line, we are importing a new function from React called
+useState. useState is what is called a hook. React defines a hook as
+"a special function that lets you 'hook into' React features". useState will create
+a state variable that will be preserved between calls to our component function. So
+for instance, if I set counter to 5 it will stay set to 5, even if our component is
+re-rendered.
+
+lets take a look at how we initialize a state variable:
+
+```jsx
+const [counter, setCounter] = useState(0);
+```
+
+Every time we call useState, it will return two variables in an array that can be assigned
+whatever names we like. The first variable is the actual state value we will be working with,
+in our example we call this counter. The second is a function that is used to change the state
+value. We could name this whatever we want, but convention is to name it "set" followed by
+whatever piece of state it will be changing. In our case, that means we will name the function
+"setCounter". Finally, you probably noticed that we passed "0" to useState. This is the starting
+value for our piece of state.
+
+Now that we have our counter variable stored in state, we want to increment or decrement it whenever
+our buttons are clicked. As you can see, we have set up standard onClick event listeners on our
+buttons, that call our two functions for changing our counter:
+
+```jsx
+function incrementCounter() {
+  setCounter(counter + 1);
+}
+
+function decrementCounter() {
+  setCounter(counter - 1);
+}
+```
+
+So here we are able to update our state variable by calling setCounter with a new value. In this
+case we want to set the new value to either be one more or one less than the current value. However,
+we could just as easily have a function to set the state to an arbitrary value if we so desired:
+
+```jsx
+function setCounterToFive() {
+  setCounter(5);
+}
+```
+
+At this point you might be wondering why we aren't just assigning a new value to counter like so:
+
+```jsx
+function incrementCounter() {
+  counter = counter + 1;
+}
+
+function decrementCounter() {
+  counter = counter - 1;
+}
+
+function setCounterToFive() {
+  counter = 5;
+}
+```
+
+The reason is that the plain variable has no way of hooking into React's features. We can assign
+a new value to it, but it will not cause the actual component state to update, nor will it cause
+the component to re-render with the new value. When we call setCounter it lets React know to
+update state and render the component.
+
+So thats all it takes to set up a basic state variable for a React component. Lets go through
+another example to reinforce what we have covered. This time, we will have two state variables
+that will contain values other than numbers:
+
+<div id="example2"></div>
+
+In this example you can see that you can type a message to be displayed, and choose how large
+you would like that message to be. We are walk through building this example bit by bit. To
+start, we need a new component:
+
+```jsx
+import React, { useState } from "react";
+
+export default function StateExample() {
+  return <div></div>;
+}
+```
+
+Once that is done, we will want to add two pieces of state. One for the message, and one for the size.
+
+```jsx
+const [message, setMessage] = useState("");
+const [messageSize, setMessageSize] = useState("large");
+```
+
+We will need a couple of functions for handling user input and updating state as well:
+
+```jsx
+function handleMessageChange(event) {
+  setMessage(event.target.value);
+}
+
+function handleSizeChange(event) {
+  setMessageSize(event.target.value);
+}
+```
+
+We will need to render the inputs that will be used to change the state:
+
+```jsx
+return (
+  <div>
+    <div>
+      Enter a message: <input type="text" onChange={handleMessageChange} />
+    </div>
+    <span>Choose a message size: </span>
+    <select onChange={handleSizeChange}>
+      <option>large</option>
+      <option>medium</option>
+      <option>small</option>
+    </select>
+  </div>
+);
+```
+
+Now we need to actually render the output somewhere. For this example, we are
+actually going to be using a second component. It's important to understand that
+state in a parent component can actually be passed down to a child component as props.
+Thats what we are going to be doing in this example.
+
+```jsx
+function Message(props) {
+  if (props.messageSize === "large") {
+    return <h1>{props.message}</h1>;
+  } else if (props.messageSize === "medium") {
+    return <h3>{props.message}</h3>;
+  } else {
+    return <h5>{props.message}</h5>;
+  }
+}
+```
+
+Note: This component can actually be stored in the same file. As a convention, I try
+to only have one exported component per file, but sometimes making small sub components
+that aren't exported can be helpful for organization.
+
+Finally, the parent StateExample component will need to render the child Message component.
+We will go back to the JSX for StateComponent and add in the Message like so:
+
+```jsx
+<div>
+  <div>
+    Enter a message: <input type="text" onChange={handleMessageChange} />
+  </div>
+  <span>Choose a message size: </span>
+  <select onChange={handleSizeChange}>
+    <option>large</option>
+    <option>medium</option>
+    <option>small</option>
+  </select>
+  <Message messageSize={messageSize} message={message} />
+</div>
+```
+
+Thats all there is. You can see that StateComponent initializes our state variables
+and updates them based on user input. It then passes those variables to Message as
+props, and Message decides what to render based on what has been passed to it.
+
+The completed file looks like this:
+
+```jsx
+import React, { useState } from "react";
+
+export default function StateExample() {
+  const [message, setMessage] = useState("");
+  const [messageSize, setMessageSize] = useState("large");
+
+  function handleMessageChange(event) {
+    setMessage(event.target.value);
+  }
+
+  function handleSizeChange(event) {
+    setMessageSize(event.target.value);
+  }
+
+  return (
+    <div>
+      <div>
+        Enter a message: <input type="text" onChange={handleMessageChange} />
+      </div>
+      <span>Choose a message size: </span>
+      <select onChange={handleSizeChange}>
+        <option>large</option>
+        <option>medium</option>
+        <option>small</option>
+      </select>
+      <Message messageSize={messageSize} message={message} />
+    </div>
+  );
+}
+
+function Message(props) {
+  if (props.messageSize === "large") {
+    return <h1>{props.message}</h1>;
+  } else if (props.messageSize === "medium") {
+    return <h3>{props.message}</h3>;
+  } else {
+    return <h5>{props.message}</h5>;
+  }
+}
+```
+
+That just about wraps up this intro to React. There is a lot more that could be said
+about more advanced topics like context, effects, data managerment, etc, but hopefully
+this guide was helpful in demystifying some of the core ideas behind React.
+
+Before you go, I've got [one last exercise](/articles/react-part-5-exercise-1) to practice
+working with state.
+
+The complete code for these examples can be found here: https://github.com/Jon-Hirsch/react-part-5-state.
