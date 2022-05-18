@@ -1,0 +1,100 @@
+---
+title: "Intro to React Part 5: Props - Exercise 2"
+description: "Another exercise with props"
+category: "articles"
+displayOrder: 5
+scripts: ["/scripts/react-part-4-exercise-2/example.js"]
+---
+
+### Intro to React
+
+#### Part 4: Props - Exercise 1
+
+- [Part 1: NPM and Webpack](/articles/react-part-1-npm-and-webpack)
+- [Part 2: Babel, JSX, and React](/articles/react-part-2-babel-jsx-and-react)
+- [Part 3: Components and CSS](/articles/react-part-3-components-and-css)
+- [Part 4: Props](/articles/react-part-4-props)
+  - [Exercise 1](/articles/react-part-4-exercise-1)
+  - Exercise 2
+- [Part 5: State](/articles/react-part-5-state)
+  - [Exercise 1](/articles/react-part-5-exercise-1)
+- [Part 6: More State](/articles/react-part-6-more-state)
+  - [Exercise 1](/articles/react-part-6-exercise-1)
+
+##### Exercise 2: ShapeList Component
+
+Like the last exercise, start by going to: https://github.com/Jon-Hirsch/react-part-4-exercise-2
+and cloning or forking the repository then running
+
+```bash
+npm i
+```
+
+In this exercise you will be building upon what you made in first exercise. You should
+begin by copying your code from Shape.js into this project. If you take a look at the
+components, you will see that this time around I've provided App.js for you, but there
+is also a new empty file named ShapeList.js. This is where you will be doing all your
+work for this exercise.
+
+ShapeList will be a component that accepts a list of objects that contain shape and
+color properties, and will render Shape components based on those properties. For example:
+
+```jsx
+import React from "react";
+import ShapeList from "./ShapeList";
+
+export default function AnExampleComponent() {
+  const shapes = [
+    { shape: "diamond", color: "green", id: "1" },
+    { shape: "circle", color: "blue", id: "2" },
+    { shape: "square", color: "red", id: "3" },
+    { shape: "circle", color: "green", id: "4" },
+  ];
+
+  return (
+    <div>
+      <ShapeList shapes={shapes} />
+    </div>
+  );
+}
+```
+
+will render the following:
+
+<div id="example1"></div>
+
+In the case of this exercise, App.js will be rendering two ShapeList components
+that look like this:
+
+<div id="example2"></div>
+
+##### Requirements
+
+##### ShapeList.js
+
+- It should contain a blue square
+- It should contain a red diamond
+- It should contain a green circle
+
+These requirements are tested using the following data:
+
+```jsx
+shapes = [
+  { shape: "square", color: "blue", id: "1" },
+  { shape: "diamond", color: "red", id: "2" },
+  { shape: "circle", color: "green", id: "3" },
+];
+```
+
+Hint: the "id"s should be used as the key for each Shape component.
+
+Like last time, you can run:
+
+```bash
+npm test
+```
+
+to validate your code.
+
+Hang on to these components once you are finished. They will be used again in the
+exercises for [Part 5](/articles/react-part-5-state).

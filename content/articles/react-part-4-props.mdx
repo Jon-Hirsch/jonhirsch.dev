@@ -287,6 +287,13 @@ export default function NavBar(props) {
 }
 ```
 
+Note that the anchor tag has an additional property called "key". Every time
+you render elements as an array, each item needs to have a unique identifier
+set as its key. This has to do with how React deals with arrays internally,
+and helps it manage the elements. In this example I've settled for just using
+the link text. I've done this for the sake of simplicity, but ideally you would
+want some value you could know would never repeat, such as a unique id.
+
 You should now see a list of links that looks like the example I gave at the
 start of this section. However, right now your links don't go anywhere. They
 have text and styles, but they don't have hrefs. We will need to pass those
